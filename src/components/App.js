@@ -1,7 +1,22 @@
-import './App.css';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-function App() {
-  return <div className="App">Social App</div>;
+import { fetchPosts } from '../actions/posts';
+
+class App extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(fetchPosts());
+  }
+
+  render() {
+    return <div>Social App</div>;
+  }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    posts: state.posts,
+  };
+}
+
+export default connect()(App);
