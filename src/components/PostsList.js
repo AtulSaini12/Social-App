@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class PostsList extends Component {
   render() {
     const { posts } = this.props;
-
+    console.log('POSTLIST CALLED ::: ', posts);
     return (
       <div>
         <div className="posts-list">

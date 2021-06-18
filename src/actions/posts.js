@@ -10,6 +10,7 @@ export function fetchPosts() {
         return response.json();
       })
       .then((data) => {
+        console.log('Data api :: ', data);
         dispatch(fetchPosts(data.data.posts)); // the data here contains a object data with a list post inside it  ....  data : { data : { post : []}}
       })
       .catch((e) => {
