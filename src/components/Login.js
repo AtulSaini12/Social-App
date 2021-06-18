@@ -1,17 +1,40 @@
 import React from 'react';
 
 class Login extends React.Component {
+  //   constructor(props) {
+  //     super(props);
+  //     this.emailInputRef = React.createRef();
+  //     this.passwordInputRef = React.createRef();
+  //   }
+
   constructor(props) {
     super(props);
-    this.emailInputRef = React.createRef();
-    this.passwordInputRef = React.createRef();
+
+    this.state = {
+      email: '',
+      password: '',
+    };
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(this.emailInputRef);
-    console.log(this.passwordInputRef);
+  handleEmailChange = (e) => {
+    this.setState({
+      email: e.target.value,
+    });
   };
+  handlePasswordChange = (e) => {
+    this.setState({
+      password: e.target.value,
+    });
+  };
+  handleSubmitControlledComponent = (e) => {
+    e.preventDefault();
+    console.log('this.state :: ', this.state);
+  };
+  //   handleSubmitUncontrolledComponent = (e) => {
+  //     e.preventDefault();
+  //     console.log(this.emailInputRef);
+  //     console.log(this.passwordInputRef);
+  //   };
 
   render() {
     return (
@@ -22,7 +45,8 @@ class Login extends React.Component {
             type="email"
             placeholder="Email"
             required
-            ref={this.emailInputRef}
+            // ref={this.emailInputRef}
+            onChange={this.handleEmailChange}
           />
         </div>
         <div className="field">
@@ -30,11 +54,13 @@ class Login extends React.Component {
             type="password"
             placeholder="Password"
             required
-            ref={this.passwordInputRef}
+            // ref={this.passwordInputRef}
+            onChange={this.handlePasswordChange}
           />
         </div>
         <div className="field">
-          <button onClick={this.handleSubmit}>Log In</button>
+          {/* <button onClick={this.handleSubmitUncontrolledComponent}> */}
+          <button onClick={this.handleSubmitControlledComponent}>Log In</button>
         </div>
       </form>
     );
