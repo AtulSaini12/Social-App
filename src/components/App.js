@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { fetchPosts } from '../actions/posts';
@@ -11,6 +11,7 @@ class App extends React.Component {
 
   render() {
     const { posts } = this.props;
+    console.log('post ::: ', posts);
     return <PostsList posts={posts} />;
   }
 }
@@ -21,4 +22,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect()(App);
+export default connect(mapStateToProps)(App);
