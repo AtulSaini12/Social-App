@@ -8,7 +8,7 @@ class PostsList extends Component {
       <div>
         <div className="posts-list">
           {/* {posts.map((post) => { */}
-          return (
+
           <div className="post-wrapper">
             <div className="post-header">
               <div className="post-avatar">
@@ -57,7 +57,7 @@ class PostsList extends Component {
               </div>
             </div>
           </div>
-          );
+
           {/* })} */}
         </div>
       </div>
