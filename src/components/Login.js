@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Login } from '../actions/auth';
 
 class Login extends React.Component {
   //   constructor(props) {
@@ -29,6 +31,11 @@ class Login extends React.Component {
   handleSubmitControlledComponent = (e) => {
     e.preventDefault();
     console.log('this.state :: ', this.state);
+
+    const { email, password } = this.state;
+    if (email && password) {
+      this.props.dispatch(login(email, password));
+    }
   };
   //   handleSubmitUncontrolledComponent = (e) => {
   //     e.preventDefault();
@@ -37,9 +44,11 @@ class Login extends React.Component {
   //   };
 
   render() {
+    const { error, inProgress } = this.state.auth;
     return (
       <form className="login-form">
         <span className="login-signup-header">Log In</span>
+        {error && <div className="alert error-dailog">{error}</div>}
         <div className="field">
           <input
             type="email"
@@ -60,11 +69,28 @@ class Login extends React.Component {
         </div>
         <div className="field">
           {/* <button onClick={this.handleSubmitUncontrolledComponent}> */}
-          <button onClick={this.handleSubmitControlledComponent}>Log In</button>
+          {inProgress ? (
+            <button
+              onClick={this.handleSubmitControlledComponent}
+              disabled={inProgress}
+            >
+              Logging In...
+            </button>
+          ) : (
+            <button onClick={this.handleSubmitControlledComponent}>
+              Log In
+            </button>
+          )}
         </div>
       </form>
     );
   }
 }
 
-export default Login;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStateToProps)(Login);
