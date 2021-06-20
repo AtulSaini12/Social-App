@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
 import { fetchPosts } from '../actions/posts';
 import { Home, Navbar, Login } from '.';
+import { authenticateUser } from '../actions/auth';
 
 class App extends React.Component {
   componentDidMount() {
@@ -13,6 +14,15 @@ class App extends React.Component {
     const token = localStorage.getItem('token');
     if (token) {
       const user = jwtDecode(token);
+
+      console.log('user :: ', user);
+      this.props.dispatch(
+        authenticateUser({
+          email: user.email,
+          _id: user._id,
+          name: user.name,
+        })
+      );
     }
   }
 
