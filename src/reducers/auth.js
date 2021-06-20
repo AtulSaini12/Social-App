@@ -1,9 +1,13 @@
 import {
-  CLEAR_AUTH_STATE,
   LOGIN_FAILED,
+  LOGIN_START,
   LOGIN_SUCCESS,
+  SIGNUP_FAILED,
   SIGNUP_START,
   SIGNUP_SUCCESS,
+  AUTHENTICATE_USER,
+  LOG_OUT,
+  CLEAR_AUTH_STATE,
 } from '../actions/actionTypes';
 
 const initaialAuthState = {

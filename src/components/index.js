@@ -3,5 +3,6 @@ import App from './App';
 import Navbar from './Navbar';
 import Home from './Home';
 import Login from './Login';
+import Signup from './Signup';
 
-export { App, PostsList, Navbar, Home, Login };
+export { App, PostsList, Navbar, Home, Login, Signup };

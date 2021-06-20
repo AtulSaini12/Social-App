@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { clearAuthState, Login } from '../actions/auth';
+import { clearAuthState, login } from '../actions/auth';
 
 class Login extends React.Component {
   //   constructor(props) {
@@ -50,7 +50,7 @@ class Login extends React.Component {
   //   };
 
   render() {
-    const { error, inProgress, isLoggedIn } = this.state.auth;
+    const { error, inProgress, isLoggedIn } = this.props.auth;
 
     if (isLoggedIn) {
       return <Redirect to="/" />;

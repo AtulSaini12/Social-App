@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { signupStart, signUp, clearAuthState } from '../actions/auth';
 
-class Signup extends Component {
+class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
