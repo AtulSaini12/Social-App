@@ -10,10 +10,8 @@ import {
 } from 'react-router-dom';
 
 import { fetchPosts } from '../actions/posts';
-import { Home, Navbar, Login, Signup } from '.';
+import { Home, Navbar, Login, Signup, Settings } from '.';
 import { authenticateUser } from '../actions/auth';
-
-const settings = () => <div>Settings</div>;
 
 const PrivateRoute = (privateRouteProps) => {
   const { isLoggedIn, path, component: Component } = privateRouteProps;
@@ -69,7 +67,7 @@ class App extends React.Component {
             />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <PrivateRoute path="/settings" component={settings} />
+            <PrivateRoute path="/settings" component={Settings} />
           </Switch>
         </div>
       </Router>
