@@ -8,6 +8,7 @@ import {
   SIGNUP_SUCCESS,
   AUTHENTICATE_USER,
   LOG_OUT,
+  CLEAR_AUTH_STATE,
 } from './actionTypes';
 import { getFormBody } from '../helpers/utils';
 
@@ -25,6 +26,13 @@ export function logoutUser() {
     type: LOG_OUT,
   };
 }
+
+export function clearAuthState() {
+  return {
+    type: CLEAR_AUTH_STATE,
+  };
+}
+
 //LOGIN ACTION CREATORS
 export function startLogin() {
   return {
