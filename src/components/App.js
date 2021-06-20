@@ -1,11 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as jwtDecode from 'jwt-decode';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 
 import { fetchPosts } from '../actions/posts';
-import { Home, Navbar, Login } from '.';
+import { Home, Navbar, Login, Signup } from '.';
 import { authenticateUser } from '../actions/auth';
+
+const settings = () => <div>Settings</div>;
+
+const PrivateRoute = (privateRouteProps) => {
+  const { isLoggedIn, path, component: Component } = privateRouteProps;
+
+  return (
+    <Route
+      path={path}
+      render={(props) => {
+        return isLoggedIn ? <Component {...props} /> : <Redirect to="/login" />;
+      }}
+    />
+  );
+};
 
 class App extends React.Component {
   componentDidMount() {
@@ -47,6 +68,8 @@ class App extends React.Component {
               }}
             />
             <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <PrivateRoute path="/settings" component={settings} />
           </Switch>
         </div>
       </Router>
