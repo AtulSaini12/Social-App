@@ -9,8 +9,10 @@ import {
   AUTHENTICATE_USER,
   LOG_OUT,
   CLEAR_AUTH_STATE,
+  EDIT_USER_SUCCESSFUL,
+  EDIT_USER_FAILED,
 } from './actionTypes';
-import { getFormBody } from '../helpers/utils';
+import { getAuthTokenFromLocalStorage, getFormBody } from '../helpers/utils';
 
 //AUTHENTICATE ACTION CREATORS
 
@@ -108,7 +110,12 @@ export function signUp(email, password, confirmPassword, name) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: getFormBody({ email, password, confirmPassword, name }),
+      body: getFormBody({
+        email,
+        password,
+        confirm_password: confirmPassword,
+        name,
+      }),
     })
       .then((response) => {
         response.json();
@@ -120,6 +127,56 @@ export function signUp(email, password, confirmPassword, name) {
           return;
         }
         dispatch(signupFailed(data.message));
+      });
+  };
+}
+
+//Adding Settings Edit Changes Action Creators
+
+export function editUserSuccess(user) {
+  return {
+    type: EDIT_USER_SUCCESSFUL,
+    user,
+  };
+}
+
+export function editUserFail(error) {
+  return {
+    type: EDIT_USER_FAILED,
+    error,
+  };
+}
+
+export function editUser(name, password, confirmPassword, userId) {
+  return (dispatch) => {
+    const url = APIUrls.editProfile();
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${getAuthTokenFromLocalStorage()}`,
+      },
+      body: getFormBody({
+        name,
+        password,
+        confirm_password: confirmPassword,
+        id: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Edit Profile - data :: ', data);
+        if (data.success) {
+          dispatch(editUserSuccess(user));
+
+          if (data.data.token) {
+            localStorage.setItem('token', data.data.token);
+          }
+          return;
+        }
+
+        dispatch(editUserFail(data.message));
       });
   };
 }

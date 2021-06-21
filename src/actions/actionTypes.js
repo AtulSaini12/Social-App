@@ -14,3 +14,7 @@ export const SIGNUP_FAILED = 'SIGNUP_FAILED';
 export const AUTHENTICATE_USER = 'AUTHENTICATE_USER';
 export const LOG_OUT = 'LOG_OUT';
 export const CLEAR_AUTH_STATE = 'CLEAR_AUTH_STATE';
+
+//Settings Functionality Action Types
+export const EDIT_USER_SUCCESSFUL = 'EDIT_USER_SUCCESSFUL';
+export const EDIT_USER_FAILED = 'EDIT_USER_FAILED';
