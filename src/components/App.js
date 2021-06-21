@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 
 import { fetchPosts } from '../actions/posts';
-import { Home, Navbar, Login, Signup, Settings } from '.';
+import { Home, Navbar, Login, Signup, Settings, UserProfile } from '.';
 import { authenticateUser } from '../actions/auth';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
 
@@ -60,6 +60,7 @@ class App extends React.Component {
 
   render() {
     const { posts } = this.props;
+    const { auth } = this.props;
     console.log('post ::: ', posts);
 
     return (
@@ -80,7 +81,16 @@ class App extends React.Component {
             />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <PrivateRoute path="/settings" component={Settings} />
+            <PrivateRoute
+              path="/settings"
+              component={Settings}
+              isLoggedIn={auth.isLoggedIn}
+            />
+            <PrivateRoute
+              path="/user"
+              component={UserProfile}
+              isLoggedIn={auth.isLoggedIn}
+            />
           </Switch>
         </div>
       </Router>
@@ -91,6 +101,7 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     posts: state.posts,
+    auth: state.auth,
   };
 }
 
