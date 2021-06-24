@@ -13,6 +13,7 @@ import { fetchPosts } from '../actions/posts';
 import { Home, Navbar, Login, Signup, Settings, UserProfile } from '.';
 import { authenticateUser } from '../actions/auth';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
+import { fetchUserFriends } from '../actions/fetchUserFriends';
 
 const PrivateRoute = (privateRouteProps) => {
   const { isLoggedIn, path, component: Component } = privateRouteProps;
@@ -55,6 +56,8 @@ class App extends React.Component {
           name: user.name,
         })
       );
+
+      this.props.dispatch(fetchUserFriends());
     }
   }
 
@@ -76,7 +79,14 @@ class App extends React.Component {
               exact
               path="/"
               render={(props) => {
-                return <Home {...props} posts={posts} />;
+                return (
+                  <Home
+                    {...props}
+                    posts={posts}
+                    friends={friends}
+                    isLoggedIn={auth.isLoggedIn}
+                  />
+                );
               }}
             />
             <Route path="/login" component={Login} />

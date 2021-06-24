@@ -3,7 +3,7 @@ import {
   USER_PROFILE_FAILURE,
   USER_PROFILE_SUCCESS,
 } from './actionTypes';
-
+import { getAuthTokenFromLocalStorage } from '../helpers/utils';
 import { APIUrls } from '../helpers/urls';
 
 export function startFechUserProfile() {
