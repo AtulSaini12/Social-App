@@ -26,3 +26,5 @@ export const FETCH_USER_PROFILE = 'FETCH_USER_PROFILE';
 
 //Friend List Action Types
 export const FETCH_FRIEND_SUCCESS = 'FETCH_FRIEND_SUCCESS';
+export const ADD_FRIEND = 'ADD_FRIEND';
+export const REMOVE_FRIEND = 'REMOVE_FRIEND';
