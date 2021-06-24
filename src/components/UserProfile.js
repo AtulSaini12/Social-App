@@ -140,7 +140,7 @@ class UserProfile extends Component {
               REMOVE FRIEND
             </button>
           ) : (
-            <button className="button save-btn" onClick={this.handleSave}>
+            <button className="button save-btn" onClick={this.handleAddFriend}>
               ADD FRIEND
             </button>
           )}
