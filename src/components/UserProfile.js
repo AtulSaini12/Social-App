@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 
 class UserProfile extends Component {
+  componentDidMount() {
+    const { match } = this.props;
+
+    if (match.params.userId) {
+      // dispatch an action
+    }
+  }
+
   render() {
     return (
       <div className="settings">
