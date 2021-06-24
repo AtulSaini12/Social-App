@@ -18,3 +18,8 @@ export const CLEAR_AUTH_STATE = 'CLEAR_AUTH_STATE';
 //Settings Functionality Action Types
 export const EDIT_USER_SUCCESSFUL = 'EDIT_USER_SUCCESSFUL';
 export const EDIT_USER_FAILED = 'EDIT_USER_FAILED';
+
+//Other Users Profile Action Types
+export const USER_PROFILE_SUCCESS = 'USER_PROFILE_SUCCESS';
+export const USER_PROFILE_FAILURE = 'USER_PROFILE_FAILURE';
+export const FETCH_USER_PROFILE = 'FETCH_USER_PROFILE';

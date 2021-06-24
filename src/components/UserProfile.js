@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchUserProfile } from '../actions/profile';
 
 class UserProfile extends Component {
   componentDidMount() {
@@ -6,10 +8,16 @@ class UserProfile extends Component {
 
     if (match.params.userId) {
       // dispatch an action
+      this.props.dispatch(fetchUserProfile(match.params.userId));
     }
   }
 
   render() {
+    const {
+      match: { params },
+      profile,
+    } = this.props;
+    const user = profile.user;
     return (
       <div className="settings">
         <div className="img-container">
@@ -37,4 +45,10 @@ class UserProfile extends Component {
   }
 }
 
-export default UserProfile;
+function mapStateToProps(state) {
+  return {
+    profile: state.profile,
+  };
+}
+
+export default connect(mapStateToProps)(UserProfile);
