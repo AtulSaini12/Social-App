@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { CreatePost } from './ ';
 
 class PostsList extends Component {
   render() {
@@ -8,6 +9,7 @@ class PostsList extends Component {
     return (
       <div>
         <div className="posts-list">
+          <CreatePost />
           {posts.map((post) => {
             <div className="post-wrapper">
               <div className="post-header">

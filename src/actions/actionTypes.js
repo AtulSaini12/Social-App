@@ -28,3 +28,6 @@ export const FETCH_USER_PROFILE = 'FETCH_USER_PROFILE';
 export const FETCH_FRIEND_SUCCESS = 'FETCH_FRIEND_SUCCESS';
 export const ADD_FRIEND = 'ADD_FRIEND';
 export const REMOVE_FRIEND = 'REMOVE_FRIEND';
+
+//Create Post Action Types
+export const ADD_POST = 'ADD_POST';

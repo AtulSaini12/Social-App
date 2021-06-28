@@ -6,5 +6,16 @@ import Login from './Login';
 import Signup from './Signup';
 import Settings from './Settings';
 import UserProfile from './UserProfile';
+import CreatePost from './CreatePost';
 
-export { App, PostsList, Navbar, Home, Login, Signup, Settings, UserProfile };
+export {
+  App,
+  PostsList,
+  Navbar,
+  Home,
+  Login,
+  Signup,
+  Settings,
+  UserProfile,
+  CreatePost,
+};
