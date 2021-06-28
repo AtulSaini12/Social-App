@@ -1,12 +1,12 @@
 import {
-  FETCH_USER_PROFILE,
-  USER_PROFILE_FAILURE,
   USER_PROFILE_SUCCESS,
+  USER_PROFILE_FAILURE,
+  FETCH_USER_PROFILE,
 } from './actionTypes';
-import { getAuthTokenFromLocalStorage } from '../helpers/utils';
 import { APIUrls } from '../helpers/urls';
+import { getAuthTokenFromLocalStorage } from '../helpers/utils';
 
-export function startFechUserProfile() {
+export function startUserProfileFetch() {
   return {
     type: FETCH_USER_PROFILE,
   };
@@ -28,10 +28,9 @@ export function userProfileFailed(error) {
 
 export function fetchUserProfile(userId) {
   return (dispatch) => {
-    dispatch(startFechUserProfile);
+    dispatch(startUserProfileFetch());
 
     const url = APIUrls.userProfile(userId);
-
     fetch(url, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -40,11 +39,7 @@ export function fetchUserProfile(userId) {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.success) {
-          dispatch(userProfileSuccess(data.data.user));
-          return;
-        }
-        dispatch(userProfileFailed(data.message));
+        dispatch(userProfileSuccess(data.data.user));
       });
   };
 }

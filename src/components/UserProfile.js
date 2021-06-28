@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addFriend, removeFriend } from '../actions/fetchUserFriends';
 import { fetchUserProfile } from '../actions/profile';
 import { APIUrls } from '../helpers/urls';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
+import { addFriend, removeFriend } from '../actions/friends';
 
 class UserProfile extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       success: null,
       error: null,
       successMessage: null,
     };
   }
-
   componentDidMount() {
     const { match } = this.props;
 
@@ -25,11 +23,12 @@ class UserProfile extends Component {
     }
   }
 
-  checkIfUserIsAFriends = () => {
+  checkIfUserIsAFriend = () => {
+    console.log('this.props', this.props);
     const { match, friends } = this.props;
     const userId = match.params.userId;
 
-    const index = friends.map((friend) => friend.to_user)._id.indexOf(userId);
+    const index = friends.map((friend) => friend.to_user._id).indexOf(userId);
 
     if (index !== -1) {
       return true;
@@ -38,12 +37,12 @@ class UserProfile extends Component {
     return false;
   };
 
-  handleAddFriend = async () => {
+  handleAddFriendClick = async () => {
     const userId = this.props.match.params.userId;
     const url = APIUrls.addFriend(userId);
 
     const options = {
-      method: 'post',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Bearer ${getAuthTokenFromLocalStorage()}`,
@@ -56,9 +55,10 @@ class UserProfile extends Component {
     if (data.success) {
       this.setState({
         success: true,
-        successMessage: 'Added Friend Successfully!',
+        successMessage: 'Added friend successfully!',
       });
-      this.props.dispatch(addFriend(data.data.frienship));
+
+      this.props.dispatch(addFriend(data.data.friendship));
     } else {
       this.setState({
         success: null,
@@ -67,7 +67,8 @@ class UserProfile extends Component {
     }
   };
 
-  handleRemoveFriend = () => {
+  handleRemoveFriendClick = async () => {
+    // Mini Assignment
     const { match } = this.props;
     const url = APIUrls.removeFriend(match.params.userId);
 
@@ -81,11 +82,13 @@ class UserProfile extends Component {
 
     const response = await fetch(url, extra);
     const data = await response.json();
+    console.log('await data', data);
 
     if (data.success) {
+      // show user message
       this.setState({
         success: true,
-        successMessage: 'Friend Removed Successfully',
+        successMessage: 'Removed friends successfully!',
       });
       this.props.dispatch(removeFriend(match.params.userId));
     } else {
@@ -101,13 +104,15 @@ class UserProfile extends Component {
       match: { params },
       profile,
     } = this.props;
+    console.log('this.props', params);
     const user = profile.user;
 
     if (profile.inProgress) {
-      return <h1>Loading ...</h1>;
+      return <h1>Loading!</h1>;
     }
 
-    const isUserAFriend = this.checkIfUserIsAFriends();
+    const isUserAFriend = this.checkIfUserIsAFriend();
+    const { success, error, successMessage } = this.state;
     return (
       <div className="settings">
         <div className="img-container">
@@ -116,37 +121,36 @@ class UserProfile extends Component {
             alt="user-dp"
           />
         </div>
+
         <div className="field">
           <div className="field-label">Name</div>
-          <div className="field-value">
-            Atul Saini
-            {/* {user.name} */}
-          </div>
+          <div className="field-value">{user.name}</div>
         </div>
+
         <div className="field">
           <div className="field-label">Email</div>
-          <div className="field-value">
-            my@yours.com
-            {/* {user.email} */}
-          </div>
+          <div className="field-value">{user.email}</div>
         </div>
 
         <div className="btn-grp">
-          {isUserAFriend ? (
+          {!isUserAFriend ? (
             <button
               className="button save-btn"
-              onClick={this.handleRemoveFriend}
+              onClick={this.handleAddFriendClick}
             >
-              REMOVE FRIEND
+              Add Friend
             </button>
           ) : (
-            <button className="button save-btn" onClick={this.handleAddFriend}>
-              ADD FRIEND
+            <button
+              className="button save-btn"
+              onClick={this.handleRemoveFriendClick}
+            >
+              Remove Friend
             </button>
           )}
 
           {success && (
-            <div className="alert success-dailog">{success.message}</div>
+            <div className="alert success-dailog">{successMessage}</div>
           )}
           {error && <div className="alert error-dailog">{error}</div>}
         </div>
@@ -157,9 +161,8 @@ class UserProfile extends Component {
 
 function mapStateToProps({ profile, friends }) {
   return {
-    profile: profile,
+    profile,
     friends,
   };
 }
-
 export default connect(mapStateToProps)(UserProfile);

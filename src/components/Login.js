@@ -1,19 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { clearAuthState, login } from '../actions/auth';
+import { login, clearAuthState } from '../actions/auth';
 
-class Login extends React.Component {
-  //   constructor(props) {
-  //     super(props);
-  //     this.emailInputRef = React.createRef();
-  //     this.passwordInputRef = React.createRef();
-  //   }
-
+class Login extends Component {
   constructor(props) {
     super(props);
-
+    // this.emailInputRef = React.createRef();
+    // this.passwordInputRef = React.createRef();
     this.state = {
       email: '',
       password: '',
@@ -29,31 +24,30 @@ class Login extends React.Component {
       email: e.target.value,
     });
   };
+
   handlePasswordChange = (e) => {
     this.setState({
       password: e.target.value,
     });
   };
-  handleSubmitControlledComponent = (e) => {
-    e.preventDefault();
-    console.log('this.state :: ', this.state);
 
+  handleFormSubmit = (e) => {
+    e.preventDefault();
+    // console.log('this.emailInputRef', this.emailInputRef);
+    // console.log('this.passwordInputRef', this.passwordInputRef);
+    console.log('this.state', this.state);
     const { email, password } = this.state;
+
     if (email && password) {
       this.props.dispatch(login(email, password));
     }
   };
-  //   handleSubmitUncontrolledComponent = (e) => {
-  //     e.preventDefault();
-  //     console.log(this.emailInputRef);
-  //     console.log(this.passwordInputRef);
-  //   };
 
   render() {
-    const { error, inProgress, isLoggedIn } = this.props.auth;
+    const { error, inProgress, isLoggedin } = this.props.auth;
     const { from } = this.props.location.state || { from: { pathname: '/' } };
 
-    if (isLoggedIn) {
+    if (isLoggedin) {
       return <Redirect to={from} />;
     }
     return (
@@ -67,6 +61,7 @@ class Login extends React.Component {
             required
             // ref={this.emailInputRef}
             onChange={this.handleEmailChange}
+            value={this.state.email}
           />
         </div>
         <div className="field">
@@ -76,19 +71,16 @@ class Login extends React.Component {
             required
             // ref={this.passwordInputRef}
             onChange={this.handlePasswordChange}
+            value={this.state.password}
           />
         </div>
         <div className="field">
-          {/* <button onClick={this.handleSubmitUncontrolledComponent}> */}
           {inProgress ? (
-            <button
-              onClick={this.handleSubmitControlledComponent}
-              disabled={inProgress}
-            >
-              Logging In...
+            <button onClick={this.handleFormSubmit} disabled={inProgress}>
+              Logging in...
             </button>
           ) : (
-            <button onClick={this.handleSubmitControlledComponent}>
+            <button onClick={this.handleFormSubmit} disabled={inProgress}>
               Log In
             </button>
           )}
@@ -103,5 +95,4 @@ function mapStateToProps(state) {
     auth: state.auth,
   };
 }
-
 export default connect(mapStateToProps)(Login);

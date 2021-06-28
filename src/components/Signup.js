@@ -1,10 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { startSingup, signup, clearAuthState } from '../actions/auth';
 
-import { signupStart, signUp, clearAuthState } from '../actions/auth';
-
-class Signup extends React.Component {
+class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,20 +29,20 @@ class Signup extends React.Component {
     const { email, password, confirmPassword, name } = this.state;
 
     if (email && password && confirmPassword && name) {
-      this.props.dispatch(signupStart());
-      this.props.dispatch(signUp(email, password, confirmPassword, name));
+      this.props.dispatch(startSingup());
+      this.props.dispatch(signup(email, password, confirmPassword, name));
     }
   };
 
   render() {
-    const { inProgress, error, isLoggedIn } = this.props.auth;
+    const { inProgress, error, isLoggedin } = this.props.auth;
 
-    if (isLoggedIn) {
+    if (isLoggedin) {
       return <Redirect to="/" />;
     }
     return (
       <form className="login-form">
-        <span className="login-signUp-header"> Signup</span>
+        <span className="login-signup-header"> Signup</span>
         {error && <div className="alert error-dailog">{error}</div>}
         <div className="field">
           <input

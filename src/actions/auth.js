@@ -1,20 +1,61 @@
-import { APIUrls } from '../helpers/urls';
 import {
-  LOGIN_FAILED,
   LOGIN_START,
+  LOGIN_FAILED,
   LOGIN_SUCCESS,
-  SIGNUP_FAILED,
-  SIGNUP_START,
-  SIGNUP_SUCCESS,
   AUTHENTICATE_USER,
   LOG_OUT,
+  SIGNUP_START,
+  SIGNUP_FAILED,
+  SIGNUP_SUCCESS,
   CLEAR_AUTH_STATE,
   EDIT_USER_SUCCESSFUL,
-  EDIT_USER_FAILED,
 } from './actionTypes';
-import { getAuthTokenFromLocalStorage, getFormBody } from '../helpers/utils';
+import { APIUrls } from '../helpers/urls';
+import { getFormBody, getAuthTokenFromLocalStorage } from '../helpers/utils';
 
-//AUTHENTICATE ACTION CREATORS
+export function startLogin() {
+  return {
+    type: LOGIN_START,
+  };
+}
+export function loginFailed(errorMessage) {
+  return {
+    type: LOGIN_FAILED,
+    error: errorMessage,
+  };
+}
+
+export function loginSuccess(user) {
+  return {
+    type: LOGIN_SUCCESS,
+    user,
+  };
+}
+
+export function login(email, password) {
+  return (dispatch) => {
+    dispatch(startLogin());
+    const url = APIUrls.login();
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: getFormBody({ email, password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('data', data);
+        if (data.success) {
+          // dispatch action to save user
+          localStorage.setItem('token', data.data.token);
+          dispatch(loginSuccess(data.data.user));
+          return;
+        }
+        dispatch(loginFailed(data.message));
+      });
+  };
+}
 
 export function authenticateUser(user) {
   return {
@@ -29,82 +70,9 @@ export function logoutUser() {
   };
 }
 
-export function clearAuthState() {
-  return {
-    type: CLEAR_AUTH_STATE,
-  };
-}
-
-//LOGIN ACTION CREATORS
-export function startLogin() {
-  return {
-    type: LOGIN_START,
-  };
-}
-export function loginFailed(errorMessage) {
-  return {
-    type: LOGIN_FAILED,
-    error: errorMessage,
-  };
-}
-export function loginSuccess(user) {
-  return {
-    type: LOGIN_SUCCESS,
-    user: user,
-  };
-}
-
-export function login(email, password) {
-  return function (dispatch) {
-    dispatch(startLogin());
-    const url = APIUrls.login();
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: getFormBody({ email, password }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('data :: ', data);
-
-        if (data.success) {
-          localStorage.setItem('token', data.data.token);
-          dispatch(loginSuccess(data.data.user));
-          return;
-        }
-        dispatch(loginFailed(data.message));
-      });
-  };
-}
-
-//SIGNUP ACTION CREATORS
-
-export function signupSuccesful(user) {
-  return {
-    type: SIGNUP_SUCCESS,
-    user,
-  };
-}
-
-export function signupFailed(errorMessage) {
-  return {
-    type: SIGNUP_FAILED,
-    error: errorMessage,
-  };
-}
-
-export function signupStart() {
-  return {
-    type: SIGNUP_START,
-  };
-}
-
-export function signUp(email, password, confirmPassword, name) {
+export function signup(email, password, confirmPassword, name) {
   return (dispatch) => {
-    const url = APIUrls.signUp();
-
+    const url = APIUrls.signup();
     fetch(url, {
       method: 'POST',
       headers: {
@@ -117,13 +85,13 @@ export function signUp(email, password, confirmPassword, name) {
         name,
       }),
     })
-      .then((response) => {
-        response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
+        // console.log('data', data);
         if (data.success) {
+          // do something
           localStorage.setItem('token', data.data.token);
-          dispatch(signupSuccesful(data.data.user));
+          dispatch(signupSuccessful(data.data.user));
           return;
         }
         dispatch(signupFailed(data.message));
@@ -131,18 +99,42 @@ export function signUp(email, password, confirmPassword, name) {
   };
 }
 
-//Adding Settings Edit Changes Action Creators
+export function startSingup() {
+  return {
+    type: SIGNUP_START,
+  };
+}
 
-export function editUserSuccess(user) {
+export function signupFailed(error) {
+  return {
+    type: SIGNUP_FAILED,
+    error,
+  };
+}
+
+export function signupSuccessful(user) {
+  return {
+    type: SIGNUP_SUCCESS,
+    user,
+  };
+}
+
+export function clearAuthState() {
+  return {
+    type: CLEAR_AUTH_STATE,
+  };
+}
+
+export function editUserSuccessful(user) {
   return {
     type: EDIT_USER_SUCCESSFUL,
     user,
   };
 }
 
-export function editUserFail(error) {
+export function editUserFailed(error) {
   return {
-    type: EDIT_USER_FAILED,
+    type: EDIT_USER_SUCCESSFUL,
     error,
   };
 }
@@ -164,11 +156,11 @@ export function editUser(name, password, confirmPassword, userId) {
         id: userId,
       }),
     })
-      .then((response) => response.json())
+      .then((repsonse) => repsonse.json())
       .then((data) => {
-        console.log('Edit Profile - data :: ', data);
+        console.log('EDIT PROFIle data', data);
         if (data.success) {
-          dispatch(editUserSuccess(user));
+          dispatch(editUserSuccessful(data.data.user));
 
           if (data.data.token) {
             localStorage.setItem('token', data.data.token);
@@ -176,7 +168,7 @@ export function editUser(name, password, confirmPassword, userId) {
           return;
         }
 
-        dispatch(editUserFail(data.message));
+        dispatch(editUserFailed(data.message));
       });
   };
 }

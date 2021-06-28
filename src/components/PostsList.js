@@ -1,98 +1,24 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { CreatePost } from './ ';
+import PropTypes from 'prop-types';
+import { CreatePost, Post } from './';
 
 class PostsList extends Component {
   render() {
     const { posts } = this.props;
-    console.log('POSTLIST CALLED ::: ', posts);
     return (
-      <div>
-        <div className="posts-list">
-          <CreatePost />
-          {posts.map((post) => {
-            <div className="post-wrapper">
-              <div className="post-header">
-                <div className="post-avatar">
-                  <Link to={`/user/${post.user._id}`}>
-                    <img
-                      src="https://image.flaticon.com/icons/svg/2154/2154651.svg"
-                      alt="user-pic"
-                    />
-                  </Link>
-                </div>
-
-                <div>
-                  <span className="post-author">
-                    Atul Saini
-                    {/* {post.user.name} */}
-                  </span>
-                  <span className="post-time">
-                    a minute ago
-                    {/* {post.createdAt} */}
-                  </span>
-                </div>
-              </div>
-
-              <div className="post-content">
-                Developing Web Apps
-                {/* {post.content} */}
-              </div>
-              <div className="post-actions">
-                <div className="post-like">
-                  <img
-                    src="https://image.flaticon.com/icons/svg/1077/1077035.svg"
-                    alt="likes-icon"
-                  />
-                  <span>
-                    899
-                    {/* {post.likes.length} */}
-                  </span>
-                </div>
-                <div className="post-comments-icon">
-                  <img
-                    src="https://image.flaticon.com/icons/svg/1380/1380338.svg"
-                    alt="comments-icon"
-                  />
-                  <span>
-                    26
-                    {/* {post.comments.length} */}
-                  </span>
-                </div>
-              </div>
-              <div className="post-comment-box">
-                <input placeholder="Type a comment" />
-              </div>
-
-              <div className="post-comments-list">
-                <div className="post-comments-item">
-                  <div className="post-comment-header">
-                    <span className="post-comment-author">
-                      Name
-                      {/* {post.comments[0].user.name} */}
-                    </span>
-                    <span className="post-comment-time">
-                      a minute ago
-                      {/* {post.comments[0].createdAt} */}
-                    </span>
-                    <span className="post-comment-likes">
-                      32
-                      {/* {post.comments[0].likes} */}
-                    </span>
-                  </div>
-
-                  <div className="post-comment-content">
-                    Random Comment
-                    {/* {post.comments[0].content} */}
-                  </div>
-                </div>
-              </div>
-            </div>;
-          })}
-        </div>
+      <div className="posts-list">
+        <CreatePost />
+        {posts.map((post) => (
+          <Post post={post} key={post._id} />
+        ))}
       </div>
     );
   }
 }
+
+PostsList.propTypes = {
+  posts: PropTypes.array.isRequired,
+};
 
 export default PostsList;

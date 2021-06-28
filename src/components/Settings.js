@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { clearAuthState, editUser } from '../actions/auth';
+import { editUser, clearAuthState } from '../actions/auth';
 
-class Settings extends React.Component {
+class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,10 +13,6 @@ class Settings extends React.Component {
     };
   }
 
-  componentWillUnmount() {
-    this.props.dispatch(clearAuthState());
-  }
-
   handleChange = (fieldName, val) => {
     this.setState({
       [fieldName]: val,
@@ -24,13 +20,18 @@ class Settings extends React.Component {
   };
 
   handleSave = () => {
-    const { name, password, confirmPassword } = this.state;
+    const { password, confirmPassword, name } = this.state;
     const { user } = this.props.auth;
 
     this.props.dispatch(editUser(name, password, confirmPassword, user._id));
   };
+
+  componentWillUnmount() {
+    this.props.dispatch(clearAuthState());
+  }
   render() {
-    const { user, error } = this.props.user;
+    const { user, error } = this.props.auth;
+    const { editMode } = this.state;
     return (
       <div className="settings">
         <div className="img-container">
@@ -38,24 +39,25 @@ class Settings extends React.Component {
             src="https://image.flaticon.com/icons/svg/2154/2154651.svg"
             alt="user-dp"
           />
-
-          {error && <div className="alert error-dailog">{error}</div>}
-          {error === false && (
-            <div className="alert success-dailog">
-              Profile Updated Successfully
-            </div>
-          )}
         </div>
+
+        {error && <div className="alert error-dailog">{error}</div>}
+        {error === false && (
+          <div className="alert success-dailog">
+            Successfully updated profile!
+          </div>
+        )}
         <div className="field">
           <div className="field-label">Email</div>
           <div className="field-value">{user.email}</div>
         </div>
+
         <div className="field">
           <div className="field-label">Name</div>
           {editMode ? (
             <input
-              value="text"
-              onChange={(e) => this.handleChange('name', e.value.target)}
+              type="text"
+              onChange={(e) => this.handleChange('name', e.target.value)}
               value={this.state.name}
             />
           ) : (
@@ -65,19 +67,22 @@ class Settings extends React.Component {
 
         {editMode && (
           <div className="field">
-            <div className="field-label">New Password</div>
+            <div className="field-label">New password</div>
+
             <input
-              value="password"
+              type="password"
               onChange={(e) => this.handleChange('password', e.target.value)}
               value={this.state.password}
             />
           </div>
         )}
+
         {editMode && (
           <div className="field">
-            <div className="field-label">Confirm Password</div>
+            <div className="field-label">Confirm password</div>
+
             <input
-              value="password"
+              type="password"
               onChange={(e) =>
                 this.handleChange('confirmPassword', e.target.value)
               }
@@ -94,18 +99,18 @@ class Settings extends React.Component {
           ) : (
             <button
               className="button edit-btn"
-              onClick={() => this.handleChange('editProfile', true)}
+              onClick={() => this.handleChange('editMode', true)}
             >
-              Edit Profile
+              Edit profile
             </button>
           )}
 
           {editMode && (
             <div
               className="go-back"
-              onClick={() => this.handleChange('editProfile', false)}
+              onClick={() => this.handleChange('editMode', false)}
             >
-              Go Back
+              Go back
             </div>
           )}
         </div>
@@ -114,10 +119,9 @@ class Settings extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ auth }) {
   return {
-    auth: state.auth,
+    auth,
   };
 }
-
 export default connect(mapStateToProps)(Settings);
