@@ -1,6 +1,6 @@
 import { APIUrls } from '../helpers/urls';
 import { FETCH_SEARCH_USER_SUCCESS } from './actionTypes';
-import { getAuthFromLocalStorage } from '../helpers/utils';
+import { getAuthTokenFromLocalStorage } from '../helpers/utils';
 
 export function searchUsers(searchText) {
   const url = APIUrls.searchUsers(searchText);
@@ -8,7 +8,7 @@ export function searchUsers(searchText) {
     fetch(url, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Bearer ${getAuthFromLocalStorage()}`,
+        Authorization: `Bearer ${getAuthTokenFromLocalStorage()}`,
       },
     })
       .then((response) => {

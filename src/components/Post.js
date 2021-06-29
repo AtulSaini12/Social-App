@@ -43,7 +43,7 @@ class Post extends Component {
     const { post, user } = this.props;
     const { comment } = this.state;
 
-    isPostLikeByUser = post.likes.includes(user._id);
+    const isPostLikeByUser = post.likes.includes(user._id);
 
     return (
       <div className="post-wrapper" key={post._id}>
