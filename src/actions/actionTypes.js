@@ -29,3 +29,6 @@ export const ADD_POST = 'ADD_POST';
 export const ADD_COMMENT = 'ADD_COMMENT';
 
 export const UPDATE_POST_LIKE = 'UPDATE_POST_LIKE';
+
+//search bar
+export const FETCH_SEARCH_USER_SUCCESS = 'FETCH_SEARCH_USER_SUCCESS';
