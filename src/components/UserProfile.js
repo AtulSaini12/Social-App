@@ -23,6 +23,20 @@ class UserProfile extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const {
+      match: { params: prevParams },
+    } = this.prevProps;
+
+    const {
+      match: { params: currParams },
+    } = this.props;
+
+    if (prevParams && currParams && prevParams.userId !== currParams.userId) {
+      this.props.dispatch(fetchUserProfile(currParams.userId));
+    }
+  }
+
   checkIfUserIsAFriend = () => {
     console.log('this.props', this.props);
     const { match, friends } = this.props;
