@@ -8,6 +8,8 @@ class Home extends Component {
       <div className="home">
         <PostsList posts={posts} />
         {isLoggedin && <FriendsList friends={friends} />}
+
+        {isLoggedIn && <Chat />}
       </div>
     );
   }
